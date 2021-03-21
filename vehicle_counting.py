@@ -1,4 +1,4 @@
-def vehicle_counter(path_to_video,left_coord_of_line,right_coord_of_line):
+def vehicle_counter(path_to_video,left_coords_of_line,right_coords_of_line):
     #importing required libraries
     import cv2 as cv
     import numpy as np
@@ -6,11 +6,11 @@ def vehicle_counter(path_to_video,left_coord_of_line,right_coord_of_line):
     #loading pre-trained yolov3 model
 
     labels=[]  #loading classes on which yolo is pre-trained
-    with open(r'C:\Users\ajays\Downloads\yolov3\coco.names.txt','r') as f:
+    with open('coco.names.txt','r') as f:
         labels=[i.strip() for i in f.readlines()]
 
     #loading config file and weights file in opencv dnn module for vehicle detection
-    network=cv.dnn.readNet(r'C:\Users\ajays\Downloads\yolov3\yolov3.weights',r'C:\Users\ajays\Downloads\yolov3\yolov3.cfg.txt')
+    network=cv.dnn.readNet('yolov3.weights','yolov3.cfg.txt')
 
     #extracting layers which will be used to classify vehicles
     layer_names=network.getLayerNames()
@@ -21,14 +21,14 @@ def vehicle_counter(path_to_video,left_coord_of_line,right_coord_of_line):
     label_box_colors=np.random.uniform(0,255,(len(labels),3))
 
     #loading video
-    frames=cv.VideoCapture(r'C:\Users\ajays\OneDrive\Desktop\20201230123300.mp4')
+    frames=cv.VideoCapture(path_to_video)
     n=0       #counter
 
     #looping through frames of video
-    while frames.isOpened():
-            _,test_img1=frames.read()
+    while (frames.isOpened()):
+            _,test_img=frames.read()
             if _==True:
-                cv.putText(test_img1, 'No. of vehicles crossed: '+str(n), (50,100), cv.FONT_HERSHEY_PLAIN, 4, (0, 70, 255), 3)
+                cv.putText(test_img, 'No. of vehicles crossed: '+str(n), (50,100), cv.FONT_HERSHEY_PLAIN, 4, (0, 70, 255), 3)
                 test_img=cv.resize(test_img1,None,None,0.5,0.5)
                 # test_img=cv.fastNlMeansDenoisingColored(test_img,None,10,10,7,21)         #can de-noise if required (at the cost of reduced speed)
                 img_height,img_width,channels=test_img.shape
@@ -62,22 +62,18 @@ def vehicle_counter(path_to_video,left_coord_of_line,right_coord_of_line):
                             class_labels.append(class_label)
 
                 #removing multiple detection of same object by using non-max supression, basically removing multiple rectangles on single object
-                suppressed=cv.dnn.NMSBoxes(rec_coords,confidences,0.4,0.4)
+                suppressed=cv.dnn.NMSBoxes(rec_coords,confidences,0.5,0.5)
 
                 #drawing a line on the image
-                line=cv.line(test_img,(0,int(img_height/1.5)),(img_width,int(img_height/1.5)),(0,255,0),2)
+                line=cv.line(test_img,(left_coords_of_line),(right_coords_of_line),(0,255,0),2)
                 #drawing bounding box around vehicles and labeling them
                 for i,j,k in zip(class_labels,confidences,rec_coords):
                     if labels[i]=='car' or labels[i]=='bus' or labels[i]=='motorbike' or labels[i]=='truck':
                         if rec_coords.index(k) in suppressed:
                             x,y,w,h=k
                             cv.rectangle(test_img,(x,y),(x+w,y+h),label_box_colors[i],2)
-                            print('y+h: ',y+h)
-                            print('line:',int(img_height/1.5))
                             if int((y+h/2)+3)>int((img_height/1.5)-2) and int((y+h/2)-3)<int((img_height/1.5)+2) :    #condition to count a vehicle
-                                print('n',n)
                                 n+=1
-                            print(labels[i])
                             class_label=labels[i]
                             cv.putText(test_img,class_label,(x-5,y-8),cv.FONT_HERSHEY_PLAIN,1,(0,255,9),1)
                 cv.namedWindow('s',cv.WINDOW_KEEPRATIO)
@@ -87,5 +83,6 @@ def vehicle_counter(path_to_video,left_coord_of_line,right_coord_of_line):
     cv.destroyAllWindows()
     frames.release()
 
+def vehicle_counter(path_to_video,left_coords_of_line,right_coords_of_line)
 
 

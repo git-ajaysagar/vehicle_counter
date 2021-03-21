@@ -80,6 +80,8 @@ def vehicle_counter(path_to_video,left_coords_of_line,right_coords_of_line):
                 cv.imshow('s',test_img)
                 if cv.waitKey(25) & 0xFF == ord('q'):
                     break
+           else:
+            break
     cv.destroyAllWindows()
     frames.release()
 

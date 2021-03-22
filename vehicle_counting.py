@@ -85,6 +85,6 @@ def vehicle_counter(path_to_video,left_coords_of_line,right_coords_of_line):
     cv.destroyAllWindows()
     frames.release()
 
-def vehicle_counter(path_to_video,left_coords_of_line,right_coords_of_line)
+vehicle_counter(path_to_video,left_coords_of_line,right_coords_of_line)
 
 

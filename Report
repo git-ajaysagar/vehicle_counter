@@ -1,0 +1,18 @@
+I've used the state-of-the-art deep learning architecture i.e. YOLO architecture to develop the solution for the given problem. YOLO stands for "you only look once", 
+due to the fact that yolo takes in the whole image at once and detects objects in it in a single forward pass, unlike other deep-learning architecture used for image
+detection/recognition, which goes through the image again and again at different scale to extract features. This makes YOLO very fast as compared to other architectures. 
+I've used opencv's DNN module to render the pre-trained weights and configuration file for YOLO V3 model.I chose this model because it's the latest and best technology in
+the field of object detection/recognition, moreover it's accurate and fast. I ran it on the CPU only, because my system does not have a GPU. Though, used with GPU, it's
+performance can be improved many folds. Although it's a little bit complex to use, but it's accurate and can detect and recognize objects at extreme angles. Also, it can 
+successfully recognize an object even if it's partially covered. 
+
+There were other models and architectures that I could have used to detect vehicles, like I could have made a custom haar-cascade file to detect vehicles and further 
+applied CNN and manually train a model to recognize them (vehicles). I could have tried the background-subtractor approach to detect moving vehicles from the stationary
+background, that would have performed faster on CPU as compared to YOLO, but it won't be a deep learning approach, secondly, it won't be detecting vehicles exactly but 
+anything which would be moving. Other models doesn't work accurately and are not robust. Those which are, are slow. YOLO model is obviously better than any other object
+detection model, because it's more accurate, more robust  and faster than any other model. It is pre-trained on 80 day-to-day life objects. But it could be trained to 
+detect any custom object that user wishes to. My solution could be improved by using the model with GPU and tweaking it's hyper-parameter accordingly. There are mainly three
+files required to use YOLO model, which are coco.names, yolov3.weights, yolov3.cfg. Coco.names just contains names of the classes/objects on which YOLO is pre-trained.
+yolo.cfg is the configuration file which has the information regarding the network architecture (hidden layers, activation functions etc.). yolov3.weights files is the largest
+of the three which contains trained weights for the object recognition. Link to download the weights file is given in the repository. In this problem, the YOLO model is used to 
+detect cars, buses, motorbike and trucks. Further, those detected vehicles are counted.
